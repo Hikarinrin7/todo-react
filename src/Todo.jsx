@@ -4,15 +4,32 @@ import './style.css'
 
 export const Todo = ()=> {
   // stateの定義（todoの内容）
-  const [incompleteTodos, setIncompleteTodos] = useState(["Todoです1", "Todoです2"])
-  const [completeTodos, setcompleteTodos] = useState(["Todoでした1", "Todoでした2"])
+  const [incompleteTodos, setIncompleteTodos] = useState([
+    "Todoです1",
+    "Todoです2"
+  ])
+  const [completeTodos, setcompleteTodos] = useState([
+    "Todoでした1",
+    "Todoでした2"
+  ])
+  // 入力内容受け取りのstateを定義
+  const [todoText, setTodoText] = useState("");
+  // 入力されたら、内容をtodoTextにセット。イベントが発火すると、いろんな情報を持ったeventが渡ってくる
+  const onChangeTodoText = (e) => setTodoText(e.target.value);
+  // 追加ボタンが押されたら、incompleteTodosの配列の最後に追加
+  const onClickAdd = () => {
+    if(todoText==="") return;
+    const newTodos = [...incompleteTodos, todoText];
+    setIncompleteTodos(newTodos);
+    setTodoText("");
+  }
 
   return (
     <>
       {/* Reactのjsx上でclassとしてしまうと別の意味合いになってしまう。classNameで */}
       <div className='input-area'>
-        <input placeholder='Todoを入力' />
-        <button>追加</button>
+        <input placeholder='Todoを入力' value={todoText} onChange={onChangeTodoText}/>
+        <button onClick={onClickAdd}>追加</button>
       </div>
       <div className='incomplete-area'>
         <p className='title'>未完了のtodo</p>
