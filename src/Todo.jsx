@@ -24,13 +24,23 @@ export const Todo = ()=> {
     setIncompleteTodos(newTodos);
     setTodoText("");
   }
-  // 削除ボタンが押されたら、map関数で一覧表示してるからそのtodoのindexを取得できて、
+  // 削除ボタンが押されたら、map関数で一覧表示してるからそのtodoのindexを取得できて、削除
   // 新しい配列をセットし直す感じ。incompleteTodos自体はいじらない
   // set関数は、配列が全く新しいものになったかどうかで判定するから。
   const onClickDelete = (index) => {
     const newTodos = [...incompleteTodos];
     newTodos.splice(index, 1); // index番目の要素から一つ削除
     setIncompleteTodos(newTodos);
+  }
+  // 完了ボタンが押されたら、削除&追加。削除は削除ボタンと一緒、追加は一工夫
+  const onClickComplete = (index) => {
+    const newIncompleteTodos = [...incompleteTodos];
+    newIncompleteTodos.splice(index, 1);
+    // 既存のcompleteTodosのstateに、完了が押された行の要素を追加
+    const newCompleteTodos = [...completeTodos, incompleteTodos[index]];
+    // todoの配列のstateをそれぞれ更新
+    setIncompleteTodos(newIncompleteTodos);
+    setcompleteTodos(newCompleteTodos);
   }
 
   return (
@@ -56,7 +66,7 @@ export const Todo = ()=> {
             <li key={todo}>
               <div className='list-row'>
                 <p className='todo-item'>{todo}</p>
-                <button>完了</button>
+                <button onClick={() => onClickComplete(index)}>完了</button>
                 <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             </li>
