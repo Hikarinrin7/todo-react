@@ -4,14 +4,8 @@ import './style.css'
 
 export const Todo = ()=> {
   // stateの定義（todoの内容）
-  const [incompleteTodos, setIncompleteTodos] = useState([
-    "Todoです1",
-    "Todoです2"
-  ])
-  const [completeTodos, setcompleteTodos] = useState([
-    "Todoでした1",
-    "Todoでした2"
-  ])
+  const [incompleteTodos, setIncompleteTodos] = useState([]);
+  const [completeTodos, setCompleteTodos] = useState([]);
   // 入力内容受け取りのstateを定義
   const [todoText, setTodoText] = useState("");
   // 入力されたら、内容をtodoTextにセット。イベントが発火すると、いろんな情報を持ったeventが渡ってくる
@@ -40,8 +34,18 @@ export const Todo = ()=> {
     const newCompleteTodos = [...completeTodos, incompleteTodos[index]];
     // todoの配列のstateをそれぞれ更新
     setIncompleteTodos(newIncompleteTodos);
-    setcompleteTodos(newCompleteTodos);
+    setCompleteTodos(newCompleteTodos);
   }
+  // 戻すボタンが押されたら
+  const onClickBack = (index) => {
+    const newCompleteTodos = [...completeTodos];
+    newCompleteTodos.splice(index,1);
+
+    const newIncompleteTodos = [...incompleteTodos, completeTodos[index]];
+
+    setCompleteTodos(newCompleteTodos);
+    setIncompleteTodos(newIncompleteTodos);
+  };
 
   return (
     <>
@@ -78,11 +82,11 @@ export const Todo = ()=> {
       <p className='title'>完了のtodo</p>
         <ul>
           {/* returnは省略 */}
-          {completeTodos.map((todo)=>(
+          {completeTodos.map((todo, index)=>(
             <li key={todo}>
               <div className='list-row'>
                 <p className='todo-item'>{todo}</p>
-                <button>戻す</button>
+                <button onClick={() => onClickBack(index)}>戻す</button>
               </div>
             </li>
           ))}
