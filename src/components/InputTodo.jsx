@@ -8,16 +8,17 @@ const style={
 }
 
 export const InputTodo = (props) => {
-    const { todoText, onChange, onClick } = props;
+    const { todoText, onChange, onClick, disabled } = props;
     return(
         // Reactのjsx上でclassとしてしまうと別の意味合いになってしまう。classNameで
         <div style={style}>
             <input 
+                disabled={disabled}
                 placeholder='Todoを入力'
                 value={todoText}
                 onChange={onChange}
             />
-            <button onClick={onClick}>追加</button>
+            <button disabled={disabled} onClick={onClick}>追加</button>
         </div>
     )
 }
