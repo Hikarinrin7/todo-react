@@ -17,11 +17,20 @@ export const Todo = ()=> {
   // 入力されたら、内容をtodoTextにセット。イベントが発火すると、いろんな情報を持ったeventが渡ってくる
   const onChangeTodoText = (e) => setTodoText(e.target.value);
   // 追加ボタンが押されたら、incompleteTodosの配列の最後に追加
+  // 新しい配列をセットし直す感じ
   const onClickAdd = () => {
     if(todoText==="") return;
     const newTodos = [...incompleteTodos, todoText];
     setIncompleteTodos(newTodos);
     setTodoText("");
+  }
+  // 削除ボタンが押されたら、map関数で一覧表示してるからそのtodoのindexを取得できて、
+  // 新しい配列をセットし直す感じ。incompleteTodos自体はいじらない
+  // set関数は、配列が全く新しいものになったかどうかで判定するから。
+  const onClickDelete = (index) => {
+    const newTodos = [...incompleteTodos];
+    newTodos.splice(index, 1); // index番目の要素から一つ削除
+    setIncompleteTodos(newTodos);
   }
 
   return (
@@ -37,7 +46,7 @@ export const Todo = ()=> {
         {/* 初期値に入れたstateの配列の要素をもとに、li要素をループしながら一覧表示（レンダリング）する */}
         {/* 配列の要素を使った繰り返しなのでmap使う */}
         {/* return忘れない/変数使うときは、jsですの{}忘れない */}
-          {incompleteTodos.map((todo)=>{
+          {incompleteTodos.map((todo, index)=>{
             return(
             // 注意点：returnの一番頭の要素にkeyを設定する
             // 仮想DOMが差分を判断するときに、ループの何個目の要素なのかの判断が必要
@@ -48,7 +57,7 @@ export const Todo = ()=> {
               <div className='list-row'>
                 <p className='todo-item'>{todo}</p>
                 <button>完了</button>
-                <button>削除</button>
+                <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             </li>
             );
